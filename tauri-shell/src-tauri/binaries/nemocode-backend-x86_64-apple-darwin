@@ -1,0 +1,19 @@
+#!/bin/bash
+# Wrapper to run the Python backend
+# Get the directory where the script is located
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# The project root
+PROJECT_ROOT="/Users/machine/Desktop/Ollamacode/NemoCode-IDE"
+
+# Log start
+echo "Starting backend wrapper..." > /tmp/nemocode_wrapper.log
+
+# Activate venv
+source "$PROJECT_ROOT/backend/venv/bin/activate" >> /tmp/nemocode_wrapper.log 2>&1
+
+# Set PYTHONPATH
+export PYTHONPATH="$PROJECT_ROOT/backend"
+
+# Run the server
+echo "Running server.py..." >> /tmp/nemocode_wrapper.log
+exec python3 "$PROJECT_ROOT/backend/server.py" >> /tmp/nemocode_wrapper.log 2>&1

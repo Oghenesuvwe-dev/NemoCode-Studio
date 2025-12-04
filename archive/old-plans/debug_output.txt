@@ -1,0 +1,31 @@
+🚀 Nemo Code Agentic IDE - Quick Start
+======================================
+🧹 Cleaning up existing processes...
+🐍 Starting Python backend...
+✅ Backend started (PID: 32253)
+⏳ Waiting for backend to be ready...
+🖥️  Launching Nemo Code IDE...
+INFO:     Started server process [32253]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+
+> code-oss-dev@1.107.0 electron
+> node build/lib/electron.ts
+
+[20:47:12] Synchronizing built-in extensions...
+[20:47:12] You can manage built-in extensions with the [36m--builtin[39m flag
+[20:47:12] [34m[github][39m ms-vscode.js-debug-companion@1.1.3 [32m✔︎[39m
+[20:47:12] [34m[github][39m ms-vscode.js-debug@1.105.0 [32m✔︎[39m
+[20:47:12] [34m[github][39m ms-vscode.vscode-js-profile-table@1.0.10 [32m✔︎[39m
+file:///Users/machine/Desktop/Ollamacode/NemoCode-IDE/vscode/out/main.js:12
+throw new Error('DEFAULT_KEYS: ' + JSON.stringify(Object.keys(electron.default)));
+      ^
+
+Error: DEFAULT_KEYS: []
+    at file:///Users/machine/Desktop/Ollamacode/NemoCode-IDE/vscode/out/main.js:12:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:132:5)
+
+Node.js v22.21.1

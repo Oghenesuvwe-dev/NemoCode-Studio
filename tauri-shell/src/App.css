@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/* AGGRESSIVE: Completely disable all rendering during resize */
+.resizing {
+  pointer-events: none !important;
+}
+
+.resizing,
+.resizing *,
+.resizing *::before,
+.resizing *::after {
+  transition: none !important;
+  animation: none !important;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* Disable Monaco editor completely during resize */
+.resizing .monaco-editor,
+.resizing .monaco-editor *,
+.resizing .view-lines,
+.resizing .minimap,
+.resizing .decorationsOverviewRuler,
+.resizing .monaco-scrollable-element,
+.resizing .overflow-guard,
+.resizing .editor-container {
+  transition: none !important;
+  animation: none !important;
+  will-change: auto !important;
+}
+
+/* Prevent any layout shifts */
+.resizing .monaco-editor {
+  contain: layout !important;
+}
+
+/* Force GPU acceleration when NOT resizing */
+.monaco-editor {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Prevent window dragging on all elements */
+body {
+  -webkit-app-region: no-drag !important;
+  user-select: none !important;
+}
+
+/* Ensure resize handles work */
+.resize-handle {
+  -webkit-app-region: no-drag !important;
+  cursor: col-resize !important;
+}

@@ -1,0 +1,34 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "shell-scope",
+  "description": "Shell command permissions for terminal",
+  "local": true,
+  "windows": ["main"],
+  "permissions": [
+    {
+      "identifier": "shell:allow-spawn",
+      "allow": [
+        {
+          "cmd": "/bin/zsh",
+          "name": "zsh"
+        },
+        {
+          "cmd": "/bin/bash",
+          "name": "bash"
+        },
+        {
+          "cmd": "/bin/sh",
+          "name": "sh"
+        },
+        {
+          "cmd": "powershell.exe",
+          "name": "powershell"
+        },
+        {
+          "cmd": "cmd.exe",
+          "name": "cmd"
+        }
+      ]
+    }
+  ]
+}

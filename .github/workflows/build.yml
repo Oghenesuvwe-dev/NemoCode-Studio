@@ -1,0 +1,45 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: cd tauri-shell && npm install && npm run build
+
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: cd backend && pip install -r requirements.txt && python -m PyInstaller --onefile server.py
+
+  build-tauri:
+    needs: [build-frontend, build-backend]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - run: cd tauri-shell && npm install && npm run tauri build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: tauri-build-${{ matrix.os }}
+          path: tauri-shell/src-tauri/target/release/bundle/
