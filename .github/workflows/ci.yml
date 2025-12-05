@@ -65,9 +65,16 @@ jobs:
 
       - name: Install system dependencies (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
+        timeout-minutes: 10
         run: |
-          sudo apt-get update --fix-missing || true
-          sudo apt-get update
+          set -e
+          # Try to fix any broken packages first
+          sudo dpkg --configure -a || true
+          # Update with retries
+          for i in 1 2 3; do
+            sudo apt-get update --fix-missing && break || sleep 5
+          done
+          # Install packages
           sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
             libwebkit2gtk-4.0-dev \
             libgtk-3-dev \
@@ -80,7 +87,24 @@ jobs:
             libssl-dev \
             pkg-config \
             clang \
-            libclang-dev
+            libclang-dev || {
+              echo "First attempt failed, trying again..."
+              sudo apt-get clean
+              sudo apt-get update
+              sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+                libwebkit2gtk-4.0-dev \
+                libgtk-3-dev \
+                libayatana-appindicator3-dev \
+                librsvg2-dev \
+                build-essential \
+                curl \
+                wget \
+                file \
+                libssl-dev \
+                pkg-config \
+                clang \
+                libclang-dev
+            }
 
       - name: Set LIBCLANG_PATH (Ubuntu)
         if: matrix.os == 'ubuntu-latest'
