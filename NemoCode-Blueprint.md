@@ -1,13 +1,8 @@
-# 🏗️ NemoCode Agentic IDE Blueprint
+# NemoCode Agentic IDE Blueprint
 
 **Project Goal**: Create an Agentic IDE by forking VS Code (Code - OSS) and integrating the Llama Nemotron model for intelligence.
 
-### a dedicated section of the screen to Github repo or any git 
 
-
-
-
-https://github.com/Oghenesuvwe-dev/vscode.git
 ## 🔗 Repository Links (The Foundation)
 The project relies on the **Code - OSS** repository, the open-source foundation of VS Code.
 
@@ -17,7 +12,7 @@ The project relies on the **Code - OSS** repository, the open-source foundation 
 
 ---
 
-## 📐 Architecture Components
+## Architecture Components
 
 The blueprint requires two tightly integrated components:
 
@@ -40,9 +35,6 @@ The blueprint requires two tightly integrated components:
 | **C. API Gateway** | FastAPI / Uvicorn | Secure REST/WebSocket connection between Extension and Backend. |
 
 
-
-
-
 ### Component 3: Advanced Capabilities (Phase 3)
 **Role**: Supercharging the agent with deep context and autonomy.
 
@@ -57,7 +49,7 @@ The blueprint requires two tightly integrated components:
 
 ---
 
-## 📈 Feasibility & Best Practices
+## Feasibility & Best Practices
 
 **Possibility Rating**: **8/10** (High potential, high effort)
 *   *Challenge*: Engineering a deep, stable integration between the agent and the editor's internal state.
@@ -70,8 +62,3 @@ The blueprint requires two tightly integrated components:
 
 
 
-ollama pull llama3.2
-echo "FROM llama3.2" >> Modelfile
-echo "SYSTEM You are a friendly assistant." >> Modelfile
-ollama create -f Modelfile oghenesuvweomashone/llamamods
-ollama push oghenesuvweomashone/llamamods
