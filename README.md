@@ -15,7 +15,7 @@
 
 ---
 
-## 🚀 Features
+## Features
 
 ### **AI-Powered Coding**
 - 🤖 **Integrated AI Assistant** - Chat with local LLMs via Ollama
@@ -198,7 +198,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Built with [Tauri](https://tauri.app/)
 - Powered by [Ollama](https://ollama.ai/)
