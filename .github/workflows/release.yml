@@ -9,46 +9,8 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  create-release:
-    name: Create Release
-    runs-on: ubuntu-latest
-    outputs:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-      version: ${{ steps.get_version.outputs.version }}
-    steps:
-      - name: Get version from tag
-        id: get_version
-        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: NemoCode Studio v${{ steps.get_version.outputs.version }}
-          draft: false
-          prerelease: false
-          body: |
-            ## NemoCode Studio v${{ steps.get_version.outputs.version }}
-            
-            ### 🎉 What's New
-            - See [CHANGELOG.md](https://github.com/${{ github.repository }}/blob/main/CHANGELOG.md) for details
-            
-            ### 📦 Downloads
-            - **macOS**: Download the `.dmg` file below
-            - **Windows**: Download the `.msi` or `.exe` installer
-            - **Linux**: Download the `.deb` or `.AppImage` file
-            
-            ### 🚀 Installation
-            1. Download the appropriate file for your platform
-            2. Install/run the application
-            3. Enjoy coding with AI assistance!
-
   build-release:
     name: Build Release (${{ matrix.platform }})
-    needs: create-release
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -113,46 +75,15 @@ jobs:
         working-directory: ./tauri-shell
         run: npm run tauri build -- --target ${{ matrix.target }}
 
-      - name: Upload Release Assets (macOS DMG)
-        if: matrix.platform == 'macos' || matrix.platform == 'macos-arm'
-        uses: actions/upload-release-asset@v1
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
+            tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz
+            tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/msi/*.msi
+            tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/nsis/*.exe
+            tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
+            tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/dmg/NemoCode-Studio_${{ needs.create-release.outputs.version }}_${{ matrix.target }}.dmg
-          asset_name: NemoCode-Studio_${{ needs.create-release.outputs.version }}_${{ matrix.platform }}.dmg
-          asset_content_type: application/octet-stream
-
-      - name: Upload Release Assets (Windows MSI)
-        if: matrix.platform == 'windows'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/msi/NemoCode-Studio_${{ needs.create-release.outputs.version }}_${{ matrix.target }}.msi
-          asset_name: NemoCode-Studio_${{ needs.create-release.outputs.version }}_windows.msi
-          asset_content_type: application/octet-stream
-
-      - name: Upload Release Assets (Linux DEB)
-        if: matrix.platform == 'linux'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/deb/nemocode-studio_${{ needs.create-release.outputs.version }}_amd64.deb
-          asset_name: NemoCode-Studio_${{ needs.create-release.outputs.version }}_linux.deb
-          asset_content_type: application/octet-stream
-
-      - name: Upload Release Assets (Linux AppImage)
-        if: matrix.platform == 'linux'
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.create-release.outputs.upload_url }}
-          asset_path: ./tauri-shell/src-tauri/target/${{ matrix.target }}/release/bundle/appimage/nemocode-studio_${{ needs.create-release.outputs.version }}_amd64.AppImage
-          asset_name: NemoCode-Studio_${{ needs.create-release.outputs.version }}_linux.AppImage
-          asset_content_type: application/octet-stream
