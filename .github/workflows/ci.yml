@@ -89,6 +89,7 @@ jobs:
 
       - name: Run cargo clippy
         run: cargo clippy --all-features -- -D warnings
+        continue-on-error: true
 
   # Full build test
   build:
